@@ -1,5 +1,6 @@
 import React from 'react';
+import { UserCard } from './UserCard';
 
-const App = () => <h1>Hello React from webpack!</h1>;
+const App = () => <UserCard></UserCard>;
 
 export default App;

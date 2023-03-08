@@ -9,8 +9,9 @@ module.exports = {
 	entry: './src/index.js',
 	output: {
 		path: path.resolve(__dirname, 'dist'),
-		filename: 'bundle.js',
+		filename: 'bundle.[contenthash].js',
 		publicPath: '/',
+		assetModuleFilename: 'assets/images/[hash].[ext][query]',
 	},
 	mode: 'production',
 	resolve: {
@@ -18,6 +19,7 @@ module.exports = {
 		alias: {
 			'@components': path.resolve(__dirname, 'src/components/'),
 			'@styles': path.resolve(__dirname, 'src/styles/'),
+			'@images': path.resolve(__dirname, 'src/assets/images/'),
 		},
 	},
 	module: {
@@ -36,7 +38,18 @@ module.exports = {
 				},
 			},
 			{
-				test: /\.s[ac]ss$/,
+				test: /\.png/,
+				type: 'asset/resource',
+			},
+			{
+				test: /\.(woff|woff2|eot|ttf|otf)$/i,
+				type: 'asset/resource',
+				generator: {
+					filename: 'assets/fonts/[name].[contenthash].[ext][query]',
+				},
+			},
+			{
+				test: /\.s?[ac]ss$/,
 				use: ['style-loader', 'css-loader', 'sass-loader'],
 			},
 		],
@@ -47,7 +60,7 @@ module.exports = {
 			filename: './index.html',
 		}),
 		new MiniCssExtractPlugin({
-			filename: '[name].css',
+			filename: 'assets/styles/[name].[contenthash].css',
 		}),
 		new CleanWebpackPlugin(),
 	],
